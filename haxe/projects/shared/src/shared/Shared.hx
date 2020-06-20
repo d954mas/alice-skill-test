@@ -1,5 +1,6 @@
 package shared;
 
+import shared.Shared.OutputResponce;
 import jsoni18n.I18n;
 import shared.base.SpeechCommands;
 import shared.utils.SpeechBuilder;
@@ -51,7 +52,7 @@ import shared.project.storage.Storage;
     public function postProcessIntent(response:OutputResponce) {
     }
 
-    public function processIntent(intentStart:Intent, ?data:Dynamic) {
+    public function processIntent(intentStart:Intent, ?data:Dynamic):OutputStruct {
         world.intent = intentStart;
         updateTime();
 
@@ -79,37 +80,36 @@ import shared.project.storage.Storage;
 
 
             if (response.modelResult.code == ModelOutputResultCode.EXIT) {
-                //  getNativeApi().convExit();
-                return;
+
             }
             if (response.modelResult.code == ModelOutputResultCode.EXIT_AND_SAVE) {
-                //  flush();
-                //  getNativeApi().convExit();
-                return;
+
             }
 
 
             //  flush();
             //  world.eventClear();
             var out = outputGet();
+            out.response = response;
+            out.intent = world.intent;
+            return out;
             // out.intent = world.intent;
             //  out.response = response;
             //  nativeApi.convAskHtmlResponse(haxe.Json.stringify(out));
         } catch (error:String) {
             world.timers.update();
-            processError(error);
+            return processError(error);
         }
 
 
     }
 
-
-    //server use it when not have handler for intent_name
-    public function processUnknownIntent(intent_name:String) {
-        processError("processUnknownIntent:" + intent_name);
+    public function processIntentStringResult(intentStart:Intent, ?data:Dynamic):String {
+        return haxe.Json.stringify(processIntent(intentStart, data));
     }
 
-    private function processError(error:String) {
+
+    private function processError(error:String):OutputStruct {
         //reset states
         world.storageReset(Storage.restore(storageBackupJson));
 
@@ -123,6 +123,8 @@ import shared.project.storage.Storage;
         out.response = {
             modelResult : modelResult,
         };
+
+        return out;
     }
 
 
@@ -137,7 +139,6 @@ import shared.project.storage.Storage;
     public static function load() {
         var time = TimeUtils.getCurrentTime();
         Intents.init();
-
         Localization.load();
         SpeechCommands.load();
         trace("load shared" + (TimeUtils.getCurrentTime() - time));

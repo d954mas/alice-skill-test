@@ -1,4 +1,4 @@
-call shared_test.bat
+//call shared_test.bat
 cd ./projects
 haxe ./hxml/shared.hxml
 if errorlevel 1 (
@@ -9,5 +9,5 @@ if errorlevel 1 (
 	echo Build OK
 )
 
-xcopy /Y .\shared\bin\java\src\shared\shared.jar ..\..\..\jaicf-monstratium\libs\shared.jar
+xcopy /Y .\shared\bin\java\src\shared\shared.jar ..\..\jaicf\libs\shared.jar
 pause
