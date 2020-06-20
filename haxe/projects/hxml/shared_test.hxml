@@ -1,0 +1,26 @@
+-cp shared/src
+-cp shared/test
+-D analyzer-optimize
+-D UTEST_PRINT_TESTS
+-dce full
+
+
+-lib random
+-lib jsoni18n
+-lib hxArbitraryPrecisionInt
+-lib seedyrng
+
+-lib utest
+
+-resource ./shared/data/eng/localization.json@localization_eng
+-resource ./shared/data/ru/localization.json@localization_ru
+-resource ./shared/data/ru/speech_commands.json@speech_commands_ru
+-resource ./shared/data/eng/speech_commands.json@speech_commands_en
+
+--macro nullSafety("shared", Loose)
+-main TestRunner
+
+
+-cmd echo java
+-java ./shared/bin/java/test/shared
+-cmd java -jar ./shared/bin/java/test/shared/TestRunner.jar

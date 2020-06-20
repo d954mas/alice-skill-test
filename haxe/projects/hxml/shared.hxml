@@ -1,0 +1,21 @@
+-cp shared/src
+-D analyzer-optimize
+-dce full
+
+-lib random
+-lib jsoni18n
+-lib hxArbitraryPrecisionInt
+-lib seedyrng
+
+-resource ./shared/data/eng/localization.json@localization_eng
+-resource ./shared/data/ru/localization.json@localization_ru
+-resource ./shared/data/ru/speech_commands.json@speech_commands_ru
+-resource ./shared/data/eng/speech_commands.json@speech_commands_en
+
+
+--macro nullSafety("shared", Loose)
+--each
+
+
+-java ./shared/bin/java/src/shared
+--macro include('', true, null, ['shared/src'])
