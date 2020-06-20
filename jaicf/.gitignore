@@ -2,7 +2,6 @@
 **/.idea/
 **/build/
 **/bin/
-**/gradle/
 **/.git/
 
 /jaicf/src/main/resources/config.json
