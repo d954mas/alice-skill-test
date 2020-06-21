@@ -47,10 +47,10 @@ class IntentProcessor {
         }
 
         //Server was updates
-        if (world.storageGet().version.version != world.storageGet().profile.currentVersion) {
+        //if (world.storageGet().version.version != world.storageGet().profile.currentVersion) {
            // ask(i18n.tr("conv/server_was_update"));
-            return getResult({code:ModelOutputResultCode.EXIT});
-        }
+           // return getResult({code:ModelOutputResultCode.EXIT});
+       // }
 
         if (world.storageGet().profile.conversationIdCurrent != world.storageGet().profile.conversationIdAtStart) {
            // ask(i18n.tr("conv/play_multiple_devices"));
