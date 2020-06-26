@@ -26,6 +26,8 @@ repositories {
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
 
+    implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
+
 
     implementation("org.slf4j:slf4j-log4j12:$slf4j")
 
