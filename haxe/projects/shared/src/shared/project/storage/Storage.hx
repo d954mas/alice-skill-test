@@ -25,7 +25,7 @@ typedef TimerStorageStruct = {
 }
 
 typedef TimersStorageStruct = {
-    var serverLastTime:Float; //time of last responce in server.Set when restore storage.Also set when intent processing done
+    var serverLastTime:Float; //time of last response in server.Set when restore storage.Also set when intent processing done
     var clientDeltaTime:Float; //0 in server. In client it calc like, serverTime - clientTime
     var time:Float; //client system time + clientDeltaTime. Update when process intent in server. Or every frame in client
     var timerDelta:Float; //delta from prev update timer

@@ -1,4 +1,5 @@
 package shared.project.model;
+import shared.utils.ResponseBuilder;
 import jsoni18n.I18n;
 import haxe.DynamicAccess;
 import shared.base.struct.ContextStruct;
@@ -14,6 +15,7 @@ class World {
     public var storage:StorageStruct;
     public var intent:Intent;
     public var timers:Timers;
+    public var responseBuilder:ResponseBuilder;
     public var speechBuilder = new SpeechBuilder();
     public var speechBuilderTutorial = new SpeechBuilder();
     @:nullSafety(Off) public var i18n:I18n;
@@ -22,7 +24,9 @@ class World {
         this.storage = storage;
         intent = Intent.MAIN_FALLBACK;
         timers = new Timers();
+        responseBuilder = new ResponseBuilder();
         profileModel = new ProfileModel(this);
+
         timers.init(this);
     }
 
@@ -34,8 +38,8 @@ class World {
         return i18n.tr(key, params);
     }
 
-    public function canProcessIntent(intent:Intent, ?data:Dynamic, throwExeption:Bool = false){
-        return Intents.canProcess(this,intent,data,throwExeption);
+    public function canProcessIntent(intent:Intent, ?data:Dynamic, throwExeption:Bool = false) {
+        return Intents.canProcess(this, intent, data, throwExeption);
     }
 
     //region context

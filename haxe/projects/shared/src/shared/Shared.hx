@@ -1,6 +1,7 @@
 package shared;
 
-import shared.Shared.OutputResponce;
+import shared.utils.ResponseBuilder.ResponseDef;
+import shared.Shared.OutputResponse;
 import jsoni18n.I18n;
 import shared.base.SpeechCommands;
 import shared.utils.SpeechBuilder;
@@ -49,7 +50,7 @@ import shared.project.storage.Storage;
         world.storageGet().timers.timerDelta = world.storageGet().timers.time - prevTime;
     }
 
-    public function postProcessIntent(response:OutputResponce) {
+    public function postProcessIntent(response:OutputResponse) {
     }
 
     public function processIntent(intentStart:Intent, ?data:Dynamic):OutputStruct {
@@ -60,7 +61,7 @@ import shared.project.storage.Storage;
         try {
             world.canProcessIntent(world.intent, data, true);
 
-            var response:OutputResponce = intentProcessor.processIntent(world.intent, data);
+            var response:OutputResponse = intentProcessor.processIntent(world.intent, data);
             postProcessIntent(response);
 
             var speechBuilder:SpeechBuilder = new SpeechBuilder();
@@ -92,6 +93,8 @@ import shared.project.storage.Storage;
             var out = outputGet();
             out.response = response;
             out.intent = world.intent;
+            out.response.response = world.responseBuilder.getResult();
+            world.responseBuilder.clear();
             return out;
             // out.intent = world.intent;
             //  out.response = response;
@@ -122,6 +125,7 @@ import shared.project.storage.Storage;
 
         out.response = {
             modelResult : modelResult,
+            response : new Array<ResponseDef>()
         };
 
         return out;
@@ -150,14 +154,15 @@ import shared.project.storage.Storage;
 }
 
 
-typedef OutputResponce = {
+typedef OutputResponse = {
     var modelResult:ModelOutputResponse;
+    var response:Array<ResponseDef>;
 }
 
 typedef OutputStruct = {
     var storage:Dynamic;
     @:optional var intent:Intent;
-    @:optional var response:OutputResponce;
+    @:optional var response:OutputResponse;
 }
 
 

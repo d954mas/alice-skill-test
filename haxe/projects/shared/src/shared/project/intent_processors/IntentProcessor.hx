@@ -1,6 +1,8 @@
 package shared.project.intent_processors;
+import shared.utils.ResponseBuilder.ResponseDef;
+import shared.utils.ResponseBuilder.ResponseDef;
 import jsoni18n.I18n;
-import shared.Shared.OutputResponce;
+import shared.Shared.OutputResponse;
 import shared.utils.SpeechBuilder;
 import shared.base.enums.ContextName;
 import shared.base.output.ModelOutputResponse;
@@ -35,25 +37,26 @@ class IntentProcessor {
         return this.world.contextExist(name);
     }
 
-    public function getResult(modelResult:ModelOutputResponse) {
-        return {modelResult : modelResult}
+    public function getResult(modelResult:ModelOutputResponse):OutputResponse {
+        return {modelResult : modelResult, response: new Array<ResponseDef>()}
     }
 
-    public function processIntent(intent:Intent, ?data:Dynamic):OutputResponce {
+    public function processIntent(intent:Intent, ?data:Dynamic):OutputResponse {
         this.speechBuilder = new SpeechBuilder();
 
         if (intent == Intent.MAIN_WELCOME) {
+            world.responseBuilder.say("main welcome");
             return getResult({code:ModelOutputResultCode.SUCCESS});
         }
 
         //Server was updates
         //if (world.storageGet().version.version != world.storageGet().profile.currentVersion) {
-           // ask(i18n.tr("conv/server_was_update"));
-           // return getResult({code:ModelOutputResultCode.EXIT});
-       // }
+        // ask(i18n.tr("conv/server_was_update"));
+        // return getResult({code:ModelOutputResultCode.EXIT});
+        // }
 
         if (world.storageGet().profile.conversationIdCurrent != world.storageGet().profile.conversationIdAtStart) {
-           // ask(i18n.tr("conv/play_multiple_devices"));
+            // ask(i18n.tr("conv/play_multiple_devices"));
             return getResult({code:ModelOutputResultCode.EXIT});
         }
 
@@ -61,7 +64,8 @@ class IntentProcessor {
         switch(intent){
             //region main
             case Intent.MAIN_FALLBACK:
-            //    ask(i18n.tr("conv/fallback"));
+                //    ask(i18n.tr("conv/fallback"));
+                world.responseBuilder.say("fallback");
                 return getResult({code : ModelOutputResultCode.SUCCESS});
             default: throw "UnknownIntent:" + intent;
         }
